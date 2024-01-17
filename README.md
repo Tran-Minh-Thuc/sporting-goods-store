@@ -1,4 +1,7 @@
 ```
+remember to create env file
+```
+```
 symfony server:start
 ```
 

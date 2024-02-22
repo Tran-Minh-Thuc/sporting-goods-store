@@ -13,9 +13,6 @@ class ProductSizes
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(inversedBy: 'productSizes')]
-    private ?products $products = null;
-
     #[ORM\Column(length: 255)]
     private ?string $size = null;
 
@@ -34,18 +31,6 @@ class ProductSizes
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getProducts(): ?products
-    {
-        return $this->products;
-    }
-
-    public function setProducts(?products $products): static
-    {
-        $this->products = $products;
-
-        return $this;
     }
 
     public function getSize(): ?string

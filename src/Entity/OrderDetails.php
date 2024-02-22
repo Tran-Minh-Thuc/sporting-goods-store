@@ -16,9 +16,6 @@ class OrderDetails
     #[ORM\ManyToOne(inversedBy: 'orderDetails')]
     private ?orders $orders = null;
 
-    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
-    private ?products $products = null;
-
     #[ORM\Column]
     private ?int $quantity = null;
 
@@ -44,18 +41,6 @@ class OrderDetails
     public function setOrders(?orders $orders): static
     {
         $this->orders = $orders;
-
-        return $this;
-    }
-
-    public function getProducts(): ?products
-    {
-        return $this->products;
-    }
-
-    public function setProducts(?products $products): static
-    {
-        $this->products = $products;
 
         return $this;
     }

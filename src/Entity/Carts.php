@@ -18,21 +18,18 @@ class Carts
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
     private ?users $users = null;
 
-    #[ORM\OneToMany(mappedBy: 'carts', targetEntity: products::class)]
-    private Collection $products;
-
     #[ORM\Column]
     private ?int $quantity = null;
 
     #[ORM\Column]
-    private ?\DateTimeImmutable $createAt = null;
+    private ?float $totalPrice = null;
 
-    #[ORM\Column]
-    private ?\DateTimeImmutable $updateAt = null;
+    #[ORM\OneToMany(mappedBy: 'Carts', targetEntity: CartDetails::class)]
+    private Collection $cartDetails;
 
     public function __construct()
     {
-        $this->products = new ArrayCollection();
+        $this->cartDetails = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -52,36 +49,6 @@ class Carts
         return $this;
     }
 
-    /**
-     * @return Collection<int, products>
-     */
-    public function getProducts(): Collection
-    {
-        return $this->products;
-    }
-
-    public function addProduct(products $product): static
-    {
-        if (!$this->products->contains($product)) {
-            $this->products->add($product);
-            $product->setCarts($this);
-        }
-
-        return $this;
-    }
-
-    public function removeProduct(products $product): static
-    {
-        if ($this->products->removeElement($product)) {
-            // set the owning side to null (unless already changed)
-            if ($product->getCarts() === $this) {
-                $product->setCarts(null);
-            }
-        }
-
-        return $this;
-    }
-
     public function getQuantity(): ?int
     {
         return $this->quantity;
@@ -94,26 +61,44 @@ class Carts
         return $this;
     }
 
-    public function getCreateAt(): ?\DateTimeImmutable
+    public function getTotalPrice(): ?float
     {
-        return $this->createAt;
+        return $this->totalPrice;
     }
 
-    public function setCreateAt(\DateTimeImmutable $createAt): static
+    public function setTotalPrice(float $totalPrice): static
     {
-        $this->createAt = $createAt;
+        $this->totalPrice = $totalPrice;
 
         return $this;
     }
 
-    public function getUpdateAt(): ?\DateTimeImmutable
+    /**
+     * @return Collection<int, CartDetails>
+     */
+    public function getCartDetails(): Collection
     {
-        return $this->updateAt;
+        return $this->cartDetails;
     }
 
-    public function setUpdateAt(\DateTimeImmutable $updateAt): static
+    public function addCartDetail(CartDetails $cartDetail): static
     {
-        $this->updateAt = $updateAt;
+        if (!$this->cartDetails->contains($cartDetail)) {
+            $this->cartDetails->add($cartDetail);
+            $cartDetail->setCarts($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCartDetail(CartDetails $cartDetail): static
+    {
+        if ($this->cartDetails->removeElement($cartDetail)) {
+            // set the owning side to null (unless already changed)
+            if ($cartDetail->getCarts() === $this) {
+                $cartDetail->setCarts(null);
+            }
+        }
 
         return $this;
     }

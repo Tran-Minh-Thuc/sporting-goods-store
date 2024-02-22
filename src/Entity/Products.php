@@ -16,7 +16,7 @@ class Products
     private ?int $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'products')]
-    private ?productTypes $productTypes = null;
+    private ?producttypes $productTypes = null;
 
     #[ORM\Column(length: 255)]
     private ?string $name = null;
@@ -33,15 +33,12 @@ class Products
     #[ORM\Column]
     private ?\DateTimeImmutable $updateAt = null;
 
-    #[ORM\OneToMany(mappedBy: 'products', targetEntity: ProductSizes::class)]
-    private Collection $productSizes;
-
-    #[ORM\ManyToOne(inversedBy: 'products')]
-    private ?Carts $carts = null;
+    #[ORM\OneToMany(mappedBy: 'products', targetEntity: CartDetails::class)]
+    private Collection $cartDetails;
 
     public function __construct()
     {
-        $this->productSizes = new ArrayCollection();
+        $this->cartDetails = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -49,12 +46,12 @@ class Products
         return $this->id;
     }
 
-    public function getProductTypes(): ?productTypes
+    public function getProductTypes(): ?producttypes
     {
         return $this->productTypes;
     }
 
-    public function setProductTypes(?productTypes $productTypes): static
+    public function setProductTypes(?producttypes $productTypes): static
     {
         $this->productTypes = $productTypes;
 
@@ -122,43 +119,31 @@ class Products
     }
 
     /**
-     * @return Collection<int, ProductSizes>
+     * @return Collection<int, CartDetails>
      */
-    public function getProductSizes(): Collection
+    public function getCartDetails(): Collection
     {
-        return $this->productSizes;
+        return $this->cartDetails;
     }
 
-    public function addProductSize(ProductSizes $productSize): static
+    public function addCartDetail(CartDetails $cartDetail): static
     {
-        if (!$this->productSizes->contains($productSize)) {
-            $this->productSizes->add($productSize);
-            $productSize->setProducts($this);
+        if (!$this->cartDetails->contains($cartDetail)) {
+            $this->cartDetails->add($cartDetail);
+            $cartDetail->setProducts($this);
         }
 
         return $this;
     }
 
-    public function removeProductSize(ProductSizes $productSize): static
+    public function removeCartDetail(CartDetails $cartDetail): static
     {
-        if ($this->productSizes->removeElement($productSize)) {
+        if ($this->cartDetails->removeElement($cartDetail)) {
             // set the owning side to null (unless already changed)
-            if ($productSize->getProducts() === $this) {
-                $productSize->setProducts(null);
+            if ($cartDetail->getProducts() === $this) {
+                $cartDetail->setProducts(null);
             }
         }
-
-        return $this;
-    }
-
-    public function getCarts(): ?Carts
-    {
-        return $this->carts;
-    }
-
-    public function setCarts(?Carts $carts): static
-    {
-        $this->carts = $carts;
 
         return $this;
     }

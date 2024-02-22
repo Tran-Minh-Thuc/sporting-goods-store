@@ -14,7 +14,6 @@ class SaleProducts
     private ?int $id = null;
 
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
-    private ?products $products = null;
 
     #[ORM\Column]
     private ?float $percentDiscount = null;
@@ -31,18 +30,6 @@ class SaleProducts
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getProducts(): ?products
-    {
-        return $this->products;
-    }
-
-    public function setProducts(?products $products): static
-    {
-        $this->products = $products;
-
-        return $this;
     }
 
     public function getPercentDiscount(): ?float

@@ -19,7 +19,7 @@ class Users
     private ?roles $roles = null;
 
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
-    private ?accounts $accounts = null;
+    private ?Accounts $accounts = null;
 
     #[ORM\Column(length: 255)]
     private ?string $name = null;
